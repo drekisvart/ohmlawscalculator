@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         etn_potencia = findViewById(R.id.etn_potencia);
         tv_resultado = findViewById(R.id.tv_resultado);
     }
-    //VOLTAJE
+    //VOLTAJEholi
     public void voltaje (View view) {
 
         Integer curr = Integer.parseInt(etn_corriente.getText().toString());
