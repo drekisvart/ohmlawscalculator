@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.barriag.ohmslawcalculator3.entidades.ConexionSQLiteHelper;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,18 +20,22 @@ public class MainActivity extends AppCompatActivity {
     EditText etn_resistencia;
     EditText etn_potencia;
     TextView tv_resultado;
+    EditText et_nombre;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "db_formulas", null, 1);
 
         etn_voltaje = findViewById(R.id.etn_voltaje);
         etn_corriente = findViewById(R.id.etn_corriente);
         etn_resistencia = findViewById(R.id.etn_resistencia);
         etn_potencia = findViewById(R.id.etn_potencia);
         tv_resultado = findViewById(R.id.tv_resultado);
+        et_nombre = findViewById(R.id.et_nombre);
     }
-    //VOLTAJEholi
+    //VOLTAJE
     public void voltaje (View view) {
 
         Integer curr = Integer.parseInt(etn_corriente.getText().toString());
@@ -39,12 +45,7 @@ public class MainActivity extends AppCompatActivity {
         String resultv = String.valueOf(volt);
         tv_resultado.setText(resultv);
 
-        if(Checkno(etn_corriente.getText().toString())){
-            Toast.makeText(getApplicationContext(), "Solo numeros", Toast.LENGTH_SHORT).show();
-        }
-        if(Checkno(etn_resistencia.getText().toString())){
-            Toast.makeText(getApplicationContext(), "Solo numeros", Toast.LENGTH_SHORT).show();
-        }
+
 
     }
     //CORRIENTE
@@ -99,17 +100,14 @@ public class MainActivity extends AppCompatActivity {
         startActivity(leyohm);
     }
 
-    public Boolean Checkno(String sn){
-       Boolean check = false;
+    public void guardardatos (View view){
+        Integer volG = Integer.parseInt(etn_voltaje.getText().toString());
+        Integer resG = Integer.parseInt(etn_resistencia.getText().toString());
+        Integer currG = Integer.parseInt(etn_corriente.getText().toString());
+        Integer potG = Integer.parseInt(etn_potencia.getText().toString());
+        Integer resultadoG = Integer.parseInt(tv_resultado.getText().toString());
 
-       String no = "\\d*\\.?\\d+";
-       CharSequence inputStr = sn;
-       Pattern pte = Pattern.compile(no,Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pte.matcher(inputStr);
-        if (matcher.matches()){
-            check = true;
-        }
-        return check;
+        
     }
 
 
