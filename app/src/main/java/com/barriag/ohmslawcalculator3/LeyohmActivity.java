@@ -13,7 +13,7 @@ public class LeyohmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leyohm);
-        Toast.makeText(getApplicationContext(),"Formulas de ley de ohms",Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),"Formulas de ley de ohms",Toast.LENGTH_SHORT).show();
     }
 
     public void volver (View view){

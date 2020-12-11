@@ -2,7 +2,10 @@ package com.barriag.ohmslawcalculator3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -10,40 +13,46 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.barriag.ohmslawcalculator3.entidades.ConexionSQLiteHelper;
+import com.barriag.ohmslawcalculator3.utlidades.Utilidades;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
-    EditText etn_voltaje;
-    EditText etn_corriente;
-    EditText etn_resistencia;
-    EditText etn_potencia;
+    EditText et_voltaje;
+    EditText et_corriente;
+    EditText et_resistencia;
+    EditText et_potencia;
     TextView tv_resultado;
     EditText et_nombre;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "db_formulas", null, 1);
 
-        etn_voltaje = findViewById(R.id.etn_voltaje);
-        etn_corriente = findViewById(R.id.etn_corriente);
-        etn_resistencia = findViewById(R.id.etn_resistencia);
-        etn_potencia = findViewById(R.id.etn_potencia);
+
+        et_voltaje = findViewById(R.id.et_voltaje);
+        et_corriente = findViewById(R.id.et_corriente);
+        et_resistencia = findViewById(R.id.et_resistencia);
+        et_potencia = findViewById(R.id.et_potencia);
         tv_resultado = findViewById(R.id.tv_resultado);
         et_nombre = findViewById(R.id.et_nombre);
+
     }
     //VOLTAJE
+    @SuppressLint("SetTextI18n")
     public void voltaje (View view) {
 
-        Integer curr = Integer.parseInt(etn_corriente.getText().toString());
-        Integer amps = Integer.parseInt(etn_resistencia.getText().toString());
+        Integer curr = Integer.parseInt(et_corriente.getText().toString());
+        Integer amps = Integer.parseInt(et_resistencia.getText().toString());
 
         int volt = curr * amps;
         String resultv = String.valueOf(volt);
-        tv_resultado.setText(resultv);
+
+        tv_resultado.setText(String.format("%s%s", resultv, String.format(" V")));
+
 
 
 
@@ -51,64 +60,98 @@ public class MainActivity extends AppCompatActivity {
     //CORRIENTE
     public void corriente (View view) {
 
-        Integer vol = Integer.parseInt(etn_voltaje.getText().toString());
-        Integer amps = Integer.parseInt(etn_resistencia.getText().toString());
+        Integer vol = Integer.parseInt(et_voltaje.getText().toString());
+        Integer amps = Integer.parseInt(et_resistencia.getText().toString());
 
 
         int curre = vol / amps;
         String resultc = String.valueOf(curre);
-        tv_resultado.setText(resultc);
+        tv_resultado.setText(String.format("%s%s", resultc, String.format(" A")));
 
 
     }
     //AMPS
     public void resistencia (View view) {
 
-        Integer vol = Integer.parseInt(etn_voltaje.getText().toString());
-        Integer currt = Integer.parseInt(etn_corriente.getText().toString());
+        Integer vol = Integer.parseInt(et_voltaje.getText().toString());
+        Integer currt = Integer.parseInt(et_corriente.getText().toString());
 
 
         int amps = vol / currt;
         String resulta = String.valueOf(amps);
-        tv_resultado.setText(resulta);
+        tv_resultado.setText(String.format("%s%s", resulta, String.format(" Ω")));
 
     }
     //WATTS
     public void potencia (View view) {
 
-        Integer voltage = Integer.parseInt(etn_voltaje.getText().toString());
-        Integer curr2 = Integer.parseInt(etn_corriente.getText().toString());
+        Integer voltage = Integer.parseInt(et_voltaje.getText().toString());
+        Integer curr2 = Integer.parseInt(et_corriente.getText().toString());
 
 
         int volt = voltage * curr2;
         String resultp= String.valueOf(volt);
-        tv_resultado.setText(resultp);
+        tv_resultado.setText(String.format("%s%s", resultp, String.format(" W")));
 
     }
     //Boton eliminar
     public void delete (View view){
 
 
-            etn_voltaje.setText("");
-            etn_resistencia.setText("");
-            etn_corriente.setText("");
-            etn_potencia.setText("");
+            et_voltaje.setText("");
+            et_resistencia.setText("");
+            et_corriente.setText("");
+            et_potencia.setText("");
             tv_resultado.setText("0");
     }
+
+    //button ohm's law
     public void leyohm (View view){
         Intent leyohm = new Intent(this, LeyohmActivity.class);
         startActivity(leyohm);
     }
 
+    //button save
     public void guardardatos (View view){
-        Integer volG = Integer.parseInt(etn_voltaje.getText().toString());
-        Integer resG = Integer.parseInt(etn_resistencia.getText().toString());
-        Integer currG = Integer.parseInt(etn_corriente.getText().toString());
-        Integer potG = Integer.parseInt(etn_potencia.getText().toString());
-        Integer resultadoG = Integer.parseInt(tv_resultado.getText().toString());
-
-        
+        datos();
     }
+
+    public void datos(){
+        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "db_formulas", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(Utilidades.CAMPO_ID, et_nombre.getText().toString());
+        values.put(Utilidades.CAMPO_VOLTAJE, et_voltaje.getText().toString());
+        values.put(Utilidades.CAMPO_RESISTENCIA, et_resistencia.getText().toString());
+        values.put(Utilidades.CAMPO_CORRIENTE, et_corriente.getText().toString());
+        values.put(Utilidades.CAMPO_POTENCIA, et_potencia.getText().toString());
+        values.put(Utilidades.CAMPO_RESULTADO, tv_resultado.getText().toString());
+
+
+        Toast.makeText(getApplicationContext(), "Formula registrada " , Toast.LENGTH_SHORT).show();
+        db.close();
+    }
+        //button operation
+    public void historial(View view){
+        Intent historial = new Intent(this, HistorialActivity.class);
+        startActivity(historial);
+    }
+
+        //button delete
+    public void eliminar (View view) {
+        ConexionSQLiteHelper conn = new ConexionSQLiteHelper(this, "db_formulas", null, 1);
+        SQLiteDatabase db = conn.getWritableDatabase();
+        String Selection = Utilidades.CAMPO_ID+"=?";
+        String[] argsel = {et_nombre.getText().toString()
+        };
+
+        db.delete(Utilidades.TABLA_FORMULAS, Selection, argsel);
+        Toast.makeText(getApplicationContext(), "Se ha eliminado el calculo " , Toast.LENGTH_SHORT).show();
+
+
+    }
+
 
 
 }

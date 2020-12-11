@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">ohmslawcalculator3</string>
+    <string name="txt_voltaje_String">Voltaje</string>
+    <string name="txt_resistencia_String">Resistencia</string>
+    <string name="txt_corriente_String">Corriente</string>
+    <string name="txt_potencia_String">Potencia</string>
+    <string name="txt_nombre_String">Coloca un nombre</string>
+    <string name="button_guardar">Guardar resultados</string>
+    <string name="button_eliminar_resultado">Eliminar resultados</string>
+    <string name="button_eliminar">Limpiar</string>
+    <string name="button_historial">Historial de operaciones</string>
+    <string name="button_leyohm">Ley de ohm</string>
+    <string name="button_voltaje">Voltaje</string>
+    <string name="button_resistencia">Resistencia</string>
+    <string name="button_corriente">Corriente</string>
+    <string name="button_potencia">Potencia</string>
+    <string name="txt_resultado">0</string>
+
+    //historial
+    <string name="txt_historial">Historial </string>
+    <string name="tv_voltaje">Voltaje =</string>
+    <string name="tv_resistencia">Resistencia = </string>
+    <string name="tv_corriente">Corriente =</string>
+    <string name="tv_potencia">Potencia =</string>
+    <string name="tv_resultado">Resultado =</string>
+    <string name="button_volver">Volver</string>
+
 </resources>

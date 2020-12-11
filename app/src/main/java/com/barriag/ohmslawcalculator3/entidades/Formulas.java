@@ -17,6 +17,9 @@ public class Formulas {
         this.resultado = resultado;
     }
 
+    public Formulas() {
+    }
+
     public String getId() {
         return id;
     }
@@ -27,10 +30,12 @@ public class Formulas {
 
     public Integer getVoltaje() {
         return voltaje;
+
     }
 
     public void setVoltaje(Integer voltaje) {
         this.voltaje = voltaje;
+
     }
 
     public Integer getResistencia() {
